@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:investasi_ala_ala/utils/color.dart';
 
-Future<dynamic> sudahBayarDialog(BuildContext context, int jenis, int index, List list, void Function() onPress) {
+Future<dynamic> sudahBayarDialog(BuildContext context, int jenis, int index, List list, {required void Function()? onPressed}) {
     return showDialog(context: context, builder: (context) {
       return AlertDialog(
         title: Text("Selesai"),
@@ -13,7 +13,7 @@ Future<dynamic> sudahBayarDialog(BuildContext context, int jenis, int index, Lis
               backgroundColor: hijauMuda,
               foregroundColor: hijauTua
             ),
-            onPressed: () => onPress,
+            onPressed: onPressed,
             child: Text("Udah"),
           ),
           TextButton(onPressed: () => Navigator.pop(context), child: Text("Belom"))

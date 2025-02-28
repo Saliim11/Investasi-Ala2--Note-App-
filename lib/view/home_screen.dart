@@ -3,6 +3,8 @@ import 'package:investasi_ala_ala/data/data_list.dart';
 import 'package:investasi_ala_ala/model/hutang.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/color.dart';
+import 'package:investasi_ala_ala/view/view-part/daftar.dart';
+import 'package:investasi_ala_ala/view/view-part/dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -223,73 +225,52 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   
   // ============================================ daftar ListView ===================================================
-  Expanded tampilanDaftar(List<dynamic> list, int jenis) {
-    return Expanded(
-      child: ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.all(8.0),
-        itemCount: list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: ListTile(
-              title: Text("Rp ${list[index].nominal}"),
-              subtitle: Row(
-                children: [
-                  Icon(Icons.person, size: 20,),
-                  Text(list[index].nama),
-                ],
-              ),
-              leading: Badge(
-                child: Icon(
-                  jenis == 0 ? Icons.add : Icons.remove, 
-                  color: jenis == 0 ? hijau : merah,
-                ),
-              ),
-              trailing: GestureDetector(
-                onTap: () {
-                  _sudahBayarDialog(context, jenis, index, list);
-                },
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: merahMuda,
-                    borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: Text("Done", style: TextStyle(color: merah),),
-                ),
-              ),
+  // Expanded tampilanDaftar(List<dynamic> list, int jenis) {
+  //   return Expanded(
+  //     child: ListView.builder(
+  //       shrinkWrap: true,
+  //       padding: EdgeInsets.all(8.0),
+  //       itemCount: list.length,
+  //       itemBuilder: (BuildContext context, int index) {
+  //         return Card(
+  //           child: ListTile(
+  //             title: Text("Rp ${list[index].nominal}"),
+  //             subtitle: Row(
+  //               children: [
+  //                 Icon(Icons.person, size: 20,),
+  //                 Text(list[index].nama),
+  //               ],
+  //             ),
+  //             leading: Badge(
+  //               child: Icon(
+  //                 jenis == 0 ? Icons.add : Icons.remove, 
+  //                 color: jenis == 0 ? hijau : merah,
+  //               ),
+  //             ),
+  //             trailing: GestureDetector(
+  //               onTap: () {
+  //                 sudahBayarDialog(context, jenis, index, list,
+  //                 onPressed: () {
+  //                   setState(() {
+  //                     list.removeAt(index);
+  //                   });
+  //                   Navigator.pop(context);
+  //                 });
+  //               },
+  //               child: Container(
+  //                 padding: EdgeInsets.all(10),
+  //                 decoration: BoxDecoration(
+  //                   color: merahMuda,
+  //                   borderRadius: BorderRadius.circular(20)
+  //                 ),
+  //                 child: Text("Done", style: TextStyle(color: merah),),
+  //               ),
+  //             ),
               
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  // ============================================ dialog selesai bayar ===================================================
-  Future<dynamic> _sudahBayarDialog(BuildContext context, int jenis, int index, List list) {
-    return showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        title: Text("Selesai"),
-        content: jenis == 0 ? Text("Yakin udah bayar utangnya ke ${list[index].nama}??")
-        : Text("Yakin ${list[index].nama} dah bayar??"),
-        actions: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: hijauMuda,
-              foregroundColor: hijauTua
-            ),
-            onPressed: () {
-              setState(() {
-                list.removeAt(index);
-              });
-              Navigator.pop(context);
-            },
-            child: Text("Udah"),
-          ),
-          TextButton(onPressed: () => Navigator.pop(context), child: Text("Belom"))
-        ],
-      );
-    },);
-  }
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }  
 }
