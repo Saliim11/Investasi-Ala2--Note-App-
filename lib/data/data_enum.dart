@@ -1,0 +1,1 @@
+enum kateogriRadio{ Investasi, Hutang }
