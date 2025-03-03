@@ -91,11 +91,11 @@ class _HomeScreenState extends State<HomeScreen> {
             
                 // ============================= investasi part ===========================================
                 listInvestasi.isEmpty ? Center(child: Text("Udah nda punya simpenan"))
-                : tampilanDaftar(),
+                : tampilanDaftar(0),
             
                 // ============================= ngutang part ===========================================
                 listInvestasi.isEmpty ? Center(child: Text("Udah gk bakal minus tuh duid"))
-                : tampilanDaftar(),
+                : tampilanDaftar(1),
               ],
             ),
           )
