@@ -4,7 +4,6 @@ import 'package:investasi_ala_ala/model/hutang.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/color.dart';
 import 'package:investasi_ala_ala/view/view-part/daftar.dart';
-import 'package:investasi_ala_ala/view/view-part/dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,10 +15,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   int _selectedPage = 0;
-  int _selectedCategory = 0;
 
   final TextEditingController _contNama = TextEditingController();
-  TextEditingController _contNominal = new TextEditingController();
+  final TextEditingController _contNominal = TextEditingController();
 
   void _changePage(int index) {
     setState(() {
@@ -47,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Investisi Ala-ala..."),
       ),
@@ -86,136 +85,27 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             ],
           ),
-          IndexedStack(
-            index: _selectedPage,
-            children: [
-
-              // ============================= investasi part ===========================================
-              listInvestasi.isEmpty ? Center(child: Text("Udah nda punya simpenan"))
-              : tampilanDaftar(listInvestasi, 0),
-
-              // ============================= ngutang part ===========================================
-              listHutang.isEmpty ? Center(child: Text("Udah gk bakal minus tuh duid"))
-              : tampilanDaftar(listHutang, 1),
-            ],
+          Expanded(
+            child: IndexedStack(
+              index: _selectedPage,
+              children: [
+            
+                // ============================= investasi part ===========================================
+                listInvestasi.isEmpty ? Center(child: Text("Udah nda punya simpenan"))
+                : tampilanDaftar(listInvestasi, 0),
+            
+                // ============================= ngutang part ===========================================
+                listHutang.isEmpty ? Center(child: Text("Udah gk bakal minus tuh duid"))
+                : tampilanDaftar(listHutang, 1),
+              ],
+            ),
           )
         ],
       ),
       
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(context: context, builder: (context) { 
-            return StatefulBuilder(
-              builder:(context, setState) {
-                
-              return  AlertDialog(
-                title: Text("Tambah Data"),
-                content: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                setState((){
-                                  _selectedCategory = 0;
-                                });
-                              },
-                              child: Container(
-                                height: 40,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: _selectedCategory == 0 ? biruMuda : abu
-                                    )
-                                  )
-                                ),
-                                child: Text("Investasi"),
-                              ),
-                            )
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                setState((){
-                                  _selectedCategory = 1;
-                                });
-                              },
-                              child: Container(
-                                height: 40,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: _selectedCategory == 1 ? biruMuda : abu
-                                    )
-                                  )
-                                ),
-                                child: Text("Hutang"),
-                              ),
-                            )
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10,),
-                      TextField(
-                        controller: _contNama,
-                        decoration: InputDecoration(
-                          label: Text("Nama"),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)
-                          )
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      TextField(
-                        keyboardType: TextInputType.number,
-                        controller: _contNominal,
-                        decoration: InputDecoration(
-                          label: Text("Nominal"),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)
-                          )
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                actions: [
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_selectedCategory == 0) {
-                        setState((){
-                          listInvestasi.add(
-                            Investasi(nama: _contNama.text, nominal: double.parse(_contNominal.text), tglMulai: DateTime.now(), prio: false)
-                          );
-                        });
-                        Navigator.pop(context);
-                        
-                      } else {
-                        setState((){
-                          listHutang.add(
-                            Hutang(nama: _contNama.text, nominal: double.parse(_contNominal.text), tglMulai: DateTime.now(), prio: false)
-                          );
-                        });
-                        Navigator.pop(context);
-
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: hijauMuda,
-                      foregroundColor: hijauTua
-                    ),
-                    child: Text("Simpan"),
-                  ),
-                  TextButton(onPressed: () => Navigator.pop(context), child: Text("Skip"))
-                ],
-              );
-            });
-          });
+          dialogTambahDataIH(context);
         },
         backgroundColor: biruMuda,
         shape: CircleBorder(),
@@ -223,54 +113,127 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
-  // ============================================ daftar ListView ===================================================
-  // Expanded tampilanDaftar(List<dynamic> list, int jenis) {
-  //   return Expanded(
-  //     child: ListView.builder(
-  //       shrinkWrap: true,
-  //       padding: EdgeInsets.all(8.0),
-  //       itemCount: list.length,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         return Card(
-  //           child: ListTile(
-  //             title: Text("Rp ${list[index].nominal}"),
-  //             subtitle: Row(
-  //               children: [
-  //                 Icon(Icons.person, size: 20,),
-  //                 Text(list[index].nama),
-  //               ],
-  //             ),
-  //             leading: Badge(
-  //               child: Icon(
-  //                 jenis == 0 ? Icons.add : Icons.remove, 
-  //                 color: jenis == 0 ? hijau : merah,
-  //               ),
-  //             ),
-  //             trailing: GestureDetector(
-  //               onTap: () {
-  //                 sudahBayarDialog(context, jenis, index, list,
-  //                 onPressed: () {
-  //                   setState(() {
-  //                     list.removeAt(index);
-  //                   });
-  //                   Navigator.pop(context);
-  //                 });
-  //               },
-  //               child: Container(
-  //                 padding: EdgeInsets.all(10),
-  //                 decoration: BoxDecoration(
-  //                   color: merahMuda,
-  //                   borderRadius: BorderRadius.circular(20)
-  //                 ),
-  //                 child: Text("Done", style: TextStyle(color: merah),),
-  //               ),
-  //             ),
-              
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }  
+
+  Future<dynamic> dialogTambahDataIH(BuildContext context) {
+    return showDialog(context: context, builder: (context) { 
+      int selectedCategory = 0;
+
+      return StatefulBuilder(
+        builder:(context, setState) {
+
+        return  AlertDialog(
+          title: Text("Tambah Data"),
+          content: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState((){
+                            selectedCategory = 0;
+                          });
+                          
+                        },
+                        child: Container(
+                          height: 40,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: selectedCategory == 0 ? biruMuda : abu
+                              )
+                            )
+                          ),
+                          child: Text("Investasi"),
+                        ),
+                      )
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          setState((){
+                            selectedCategory = 1;
+                          });
+                        },
+                        child: Container(
+                          height: 40,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: selectedCategory == 1 ? biruMuda : abu
+                              )
+                            )
+                          ),
+                          child: Text("Hutang"),
+                        ),
+                      )
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                TextField(
+                  controller: _contNama,
+                  decoration: InputDecoration(
+                    label: Text("Nama"),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20)
+                    )
+                  ),
+                ),
+                SizedBox(height: 10,),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  controller: _contNominal,
+                  decoration: InputDecoration(
+                    label: Text("Nominal"),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20)
+                    )
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                if (selectedCategory == 0) {
+                  setState((){
+                    listInvestasi.add(
+                      Investasi(nama: _contNama.text, nominal: double.parse(_contNominal.text), tglMulai: DateTime.now(), prio: false)
+                    );
+                    _contNama.clear();
+                    _contNominal.clear();
+
+                  });
+                  Navigator.pop(context);
+                  
+                } else if (selectedCategory == 1) {
+                  setState((){
+                    listHutang.add(
+                      Hutang(nama: _contNama.text, nominal: double.parse(_contNominal.text), tglMulai: DateTime.now(), prio: false)
+                    );
+                    _contNama.clear();
+                    _contNominal.clear();
+                  });
+                  Navigator.pop(context);
+
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: hijauMuda,
+                foregroundColor: hijauTua
+              ),
+              child: Text("Simpan"),
+            ),
+            TextButton(onPressed: () => Navigator.pop(context), child: Text("Skip"))
+          ],
+        );
+      });
+    });
+  }
 }
