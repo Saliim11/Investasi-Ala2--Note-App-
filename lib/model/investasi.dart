@@ -5,11 +5,13 @@ class Investasi {
   final String nama;
   final double nominal;
   final DateTime tglMulai;
+  final DateTime? deadline;
   final bool prio;
   Investasi({
     required this.nama,
     required this.nominal,
     required this.tglMulai,
+    this.deadline,
     required this.prio,
   });
 
@@ -17,12 +19,14 @@ class Investasi {
     String? nama,
     double? nominal,
     DateTime? tglMulai,
+    DateTime? deadline,
     bool? prio,
   }) {
     return Investasi(
       nama: nama ?? this.nama,
       nominal: nominal ?? this.nominal,
       tglMulai: tglMulai ?? this.tglMulai,
+      deadline: deadline ?? this.deadline,
       prio: prio ?? this.prio,
     );
   }
@@ -32,6 +36,7 @@ class Investasi {
       'nama': nama,
       'nominal': nominal,
       'tglMulai': tglMulai.millisecondsSinceEpoch,
+      'deadline': deadline?.millisecondsSinceEpoch,
       'prio': prio,
     };
   }
@@ -41,6 +46,7 @@ class Investasi {
       nama: map['nama'] as String,
       nominal: map['nominal'] as double,
       tglMulai: DateTime.fromMillisecondsSinceEpoch(map['tglMulai'] as int),
+      deadline: map['deadline'] != null ? DateTime.fromMillisecondsSinceEpoch(map['deadline'] as int) : null,
       prio: map['prio'] as bool,
     );
   }
@@ -51,7 +57,7 @@ class Investasi {
 
   @override
   String toString() {
-    return 'Investasi(nama: $nama, nominal: $nominal, tglMulai: $tglMulai, prio: $prio)';
+    return 'Investasi(nama: $nama, nominal: $nominal, tglMulai: $tglMulai, deadline: $deadline, prio: $prio)';
   }
 
   @override
@@ -62,6 +68,7 @@ class Investasi {
       other.nama == nama &&
       other.nominal == nominal &&
       other.tglMulai == tglMulai &&
+      other.deadline == deadline &&
       other.prio == prio;
   }
 
@@ -70,6 +77,7 @@ class Investasi {
     return nama.hashCode ^
       nominal.hashCode ^
       tglMulai.hashCode ^
+      deadline.hashCode ^
       prio.hashCode;
   }
 }
