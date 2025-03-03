@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:investasi_ala_ala/model/investasi.dart';
 
 class DetailNoteScreen extends StatefulWidget {
-  const DetailNoteScreen({super.key, required this.nama, required this.nominal, this.deskripsi, required this.tglMulai, this.deadline});
-  final String nama;
-  final double nominal;
-  final String? deskripsi;
-  final DateTime tglMulai;
-  final DateTime? deadline;
+  const DetailNoteScreen({super.key, required this.invest, });
+  final Investasi invest;
 
   @override
   State<DetailNoteScreen> createState() => _DetailNoteScreenState();
@@ -17,14 +14,14 @@ class _DetailNoteScreenState extends State<DetailNoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Detailed A.N ${widget.nama}"),
+        title: Text("Detailed A.N ${widget.invest.nama}"),
       ),
       body: Column(
         children: [
-          Text("Nominal : ${widget.nominal}"),
-          widget.deskripsi == null ? Text("Deskripsi tidak ada"): Text("Deskripsi ${widget.deskripsi}"),
-          Text("Tanggal transaksi : ${widget.tglMulai}"),
-          widget.deadline == null ? Text("Tidak ada waktu deadline") : Text("Deadline : ${widget.deadline}")
+          Text("Nominal : ${widget.invest.nominal}"),
+          widget.invest.deskripsi == null ? Text("Deskripsi tidak ada"): Text("Deskripsi ${widget.invest.deskripsi}"),
+          Text("Tanggal transaksi : ${widget.invest.tglMulai}"),
+          widget.invest.deadline == null ? Text("Tidak ada waktu deadline") : Text("Deadline : ${widget.invest.deadline}")
         ],
       ),
     );

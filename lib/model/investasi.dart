@@ -7,7 +7,8 @@ class Investasi {
   final String? deskripsi;
   final DateTime tglMulai;
   final DateTime? deadline;
-  final bool prio;
+  bool prio;
+  final bool isInvest;
   Investasi({
     required this.nama,
     required this.nominal,
@@ -15,6 +16,7 @@ class Investasi {
     required this.tglMulai,
     this.deadline,
     required this.prio,
+    required this.isInvest,
   });
 
   Investasi copyWith({
@@ -24,6 +26,7 @@ class Investasi {
     DateTime? tglMulai,
     DateTime? deadline,
     bool? prio,
+    bool? isInvest,
   }) {
     return Investasi(
       nama: nama ?? this.nama,
@@ -32,6 +35,7 @@ class Investasi {
       tglMulai: tglMulai ?? this.tglMulai,
       deadline: deadline ?? this.deadline,
       prio: prio ?? this.prio,
+      isInvest: isInvest ?? this.isInvest,
     );
   }
 
@@ -43,6 +47,7 @@ class Investasi {
       'tglMulai': tglMulai.millisecondsSinceEpoch,
       'deadline': deadline?.millisecondsSinceEpoch,
       'prio': prio,
+      'isInvest': isInvest,
     };
   }
 
@@ -54,6 +59,7 @@ class Investasi {
       tglMulai: DateTime.fromMillisecondsSinceEpoch(map['tglMulai'] as int),
       deadline: map['deadline'] != null ? DateTime.fromMillisecondsSinceEpoch(map['deadline'] as int) : null,
       prio: map['prio'] as bool,
+      isInvest: map['isInvest'] as bool,
     );
   }
 
@@ -63,7 +69,7 @@ class Investasi {
 
   @override
   String toString() {
-    return 'Investasi(nama: $nama, nominal: $nominal, deskripsi: $deskripsi, tglMulai: $tglMulai, deadline: $deadline, prio: $prio)';
+    return 'Investasi(nama: $nama, nominal: $nominal, deskripsi: $deskripsi, tglMulai: $tglMulai, deadline: $deadline, prio: $prio, isInvest: $isInvest)';
   }
 
   @override
@@ -76,7 +82,8 @@ class Investasi {
       other.deskripsi == deskripsi &&
       other.tglMulai == tglMulai &&
       other.deadline == deadline &&
-      other.prio == prio;
+      other.prio == prio &&
+      other.isInvest == isInvest;
   }
 
   @override
@@ -86,6 +93,7 @@ class Investasi {
       deskripsi.hashCode ^
       tglMulai.hashCode ^
       deadline.hashCode ^
-      prio.hashCode;
+      prio.hashCode ^
+      isInvest.hashCode;
   }
 }

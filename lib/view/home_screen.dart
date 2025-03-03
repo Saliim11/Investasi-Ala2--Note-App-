@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:investasi_ala_ala/data/data_list.dart';
-import 'package:investasi_ala_ala/model/hutang.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/color.dart';
 import 'package:investasi_ala_ala/view/view-part/daftar.dart';
@@ -25,16 +24,16 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // void _changePriority(int index){
+  //   setState(() {
+  //     listInvestasi[index].prio = true;
+  //   });
+  // }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    for (var utang in listHutang) {
-      if (utang.prio) {
-        listPrioritas.add(utang);
-      }
-    }
-    
     for (var invest in listInvestasi) {
       if (invest.prio) {
         listPrioritas.add(invest);
@@ -92,11 +91,11 @@ class _HomeScreenState extends State<HomeScreen> {
             
                 // ============================= investasi part ===========================================
                 listInvestasi.isEmpty ? Center(child: Text("Udah nda punya simpenan"))
-                : tampilanDaftar(listInvestasi, 0),
+                : tampilanDaftar(),
             
                 // ============================= ngutang part ===========================================
-                listHutang.isEmpty ? Center(child: Text("Udah gk bakal minus tuh duid"))
-                : tampilanDaftar(listHutang, 1),
+                listInvestasi.isEmpty ? Center(child: Text("Udah gk bakal minus tuh duid"))
+                : tampilanDaftar(),
               ],
             ),
           )
@@ -204,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (selectedCategory == 0) {
                   setState((){
                     listInvestasi.add(
-                      Investasi(nama: _contNama.text, nominal: double.parse(_contNominal.text), tglMulai: DateTime.now(), prio: false)
+                      Investasi(nama: _contNama.text, nominal: double.parse(_contNominal.text), tglMulai: DateTime.now(), prio: false, isInvest: true)
                     );
                     _contNama.clear();
                     _contNominal.clear();
@@ -214,8 +213,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   
                 } else if (selectedCategory == 1) {
                   setState((){
-                    listHutang.add(
-                      Hutang(nama: _contNama.text, nominal: double.parse(_contNominal.text), tglMulai: DateTime.now(), prio: false)
+                    listInvestasi.add(
+                      Investasi(nama: _contNama.text, nominal: double.parse(_contNominal.text), tglMulai: DateTime.now(), prio: false, isInvest: false)
                     );
                     _contNama.clear();
                     _contNominal.clear();
