@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:investasi_ala_ala/data/data_list.dart';
-import 'package:investasi_ala_ala/utils/color.dart';
+import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/view/detail_note_screen.dart';
 import 'package:investasi_ala_ala/view/view-part/dialog.dart';
 
