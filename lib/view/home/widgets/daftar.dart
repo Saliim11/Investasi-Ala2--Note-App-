@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:investasi_ala_ala/data/dummy_data.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
+import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/detail/detail_note_screen.dart';
 import 'package:investasi_ala_ala/view/home/widgets/dialog.dart';
-import 'package:investasi_ala_ala/view/home/widgets/text.dart';
 
 Widget tampilanDaftar(int jenis) {
   return StatefulBuilder(
@@ -16,15 +16,16 @@ Widget tampilanDaftar(int jenis) {
       itemBuilder: (BuildContext context, int index) {
         String namaTerkait = listInvestasi[index].nama;
         double nominalUang = listInvestasi[index].nominal;
-        String tgl = DateFormat('dd MMM yyyy').format(listInvestasi[index].tglMulai);
-        bool isPrio = listInvestasi[index].prio;
+        // String tgl = DateFormat('dd MMM yyyy').format(listInvestasi[index].tglMulai);
+        String tgl = listInvestasi[index].tglMulai;
+        bool isPrio = listInvestasi[index].isPrio;
         bool isInvest = listInvestasi[index].isInvest;
         return Card(
           child: ListTile(
             title: isInvest ? 
-            teksMainScreen("Investasi ke $namaTerkait", fs: 14, fw: FontWeight.w700) : 
-            teksMainScreen("Hutang ke $namaTerkait", fs: 14, fw: FontWeight.w700),
-            subtitle: teksMainScreen(tgl, fs: 10, fw: FontWeight.w200),
+            Teks.biasa("Investasi ke $namaTerkait", fs: 14, fw: FontWeight.w700) : 
+            Teks.biasa("Hutang ke $namaTerkait", fs: 14, fw: FontWeight.w700),
+            subtitle: Teks.biasa(tgl, fs: 10, fw: FontWeight.w200),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -47,11 +48,11 @@ Widget tampilanDaftar(int jenis) {
 
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 
             DetailNoteScreen(invest: listInvestasi[index]),)),
-            onLongPress: () {
-              setState((){
-                listInvestasi[index].prio = !listInvestasi[index].prio;
-              });
-            }
+            // onLongPress: () {
+            //   setState((){
+            //     listInvestasi[index].isPrio = !listInvestasi[index].isPrio;
+            //   });
+            // }
             
           ),
         );

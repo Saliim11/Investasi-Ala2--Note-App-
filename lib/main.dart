@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:investasi_ala_ala/view/home/home_screen.dart';
+import 'package:investasi_ala_ala/view/welcome/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         fontFamily: "Inter"
       ),
-      home: HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }

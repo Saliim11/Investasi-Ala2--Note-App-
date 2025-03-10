@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:investasi_ala_ala/data/dummy_data.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
+import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/widgets/daftar.dart';
-import 'package:investasi_ala_ala/view/home/widgets/text.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,18 +26,18 @@ class _HomeScreenState extends State<HomeScreen> {
   //   });
   // }
 
-  void _changePriority(int index){
-    setState(() {
-      listInvestasi[index].prio = true;
-    });
-  }
+  // void _changePriority(int index){
+  //   setState(() {
+  //     listInvestasi[index].isPrio = true;
+  //   });
+  // }
   List<Investasi> listPrioritas = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    listPrioritas = listInvestasi.where((element) => element.prio == true).toList();
+    listPrioritas = listInvestasi.where((element) => element.isPrio == true).toList();
   }
 
   @override
@@ -67,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    teksMainScreen("Semua Catatan", fw: FontWeight.w700, fs: 16),
+                    Teks.biasa("Semua Catatan", fw: FontWeight.w700, fs: 16),
                     
                     Row(
                       children: [
@@ -101,8 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            teksMainScreen("Save money to ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
-                            teksMainScreen("Deadline: ${listPrioritas[index].deadline}", fw: FontWeight.w200, fs: 10),
+                            Teks.biasa("Save money to ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
+                            Teks.biasa("Deadline: ${listPrioritas[index].deadline}", fw: FontWeight.w200, fs: 10),
                             Align(
                               alignment: Alignment.centerRight,
                               child: Container(
@@ -126,8 +127,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    teksMainScreen("Terbaru", fs: 12, fw: FontWeight.w600),
-                    teksMainScreen("Lihat semua", fs: 10, fw: FontWeight.w300),
+                    Teks.biasa("Terbaru", fs: 12, fw: FontWeight.w600),
+                    Teks.biasa("Lihat semua", fs: 10, fw: FontWeight.w300),
                   ],
                 ),
 
@@ -300,10 +301,12 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [
             ElevatedButton(
               onPressed: () {
+                String tgl = DateFormat('dd MMM yyyy').format(DateTime.now());
+
                 if (selectedCategory == 0) {
                   setState((){
                     listInvestasi.add(
-                      Investasi(nama: _contNama.text, nominal: double.parse(_contNominal.text), tglMulai: DateTime.now(), prio: false, isInvest: true)
+                      Investasi(nama: _contNama.text, nominal: double.parse(_contNominal.text), deskripsi: "halohalo", tglMulai: tgl, deadline: tgl, isPrio: false, isInvest: true)
                     );
                     _contNama.clear();
                     _contNominal.clear();
@@ -314,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 } else if (selectedCategory == 1) {
                   setState((){
                     listInvestasi.add(
-                      Investasi(nama: _contNama.text, nominal: double.parse(_contNominal.text), tglMulai: DateTime.now(), prio: false, isInvest: false)
+                      Investasi(nama: _contNama.text, nominal: double.parse(_contNominal.text), deskripsi: "halohalo", tglMulai: tgl, deadline: tgl, isPrio: false, isInvest: false)
                     );
                     _contNama.clear();
                     _contNominal.clear();
