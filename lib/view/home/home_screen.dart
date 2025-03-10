@@ -3,6 +3,7 @@ import 'package:investasi_ala_ala/data/data_list.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/view/home/widgets/daftar.dart';
+import 'package:investasi_ala_ala/view/home/widgets/text.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -59,48 +60,35 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+            padding: const EdgeInsets.only(top: 16.0, left: 24.0, right: 24.0),
             child: Column(
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.1,),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.18,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Semua Catatan",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700
-                      ),
-                    ),
+                    teksMainScreen("Semua Catatan", fw: FontWeight.w700, fs: 16),
                     
                     Row(
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            
-                          },
-                          icon: Icon(Icons.search, color: Colors.black,),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            
-                          },
-                          icon: Icon(Icons.history, color: Colors.black,),
-                        ),
+                        Icon(Icons.search, color: Colors.black,),
+                        SizedBox(width: 25,),
+                        Icon(Icons.history, color: Colors.black,)
                       ],
                     )
                   ],
                 ),
 
                 GridView.builder(
+                  padding: EdgeInsets.only(bottom: 8),
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: listPrioritas.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 1.7,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10
                   ), 
                   itemBuilder: (context, index) {
                     return Card(
@@ -115,18 +103,38 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             teksMainScreen("Save money to ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
                             teksMainScreen("Deadline: ${listPrioritas[index].deadline}", fw: FontWeight.w200, fs: 10),
-                            CircleAvatar(
-                              backgroundColor: ColorApp.abu,
-                              maxRadius: 10,
-                              minRadius: 10,
-                              child: Icon(Icons.arrow_forward),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                height: 21,
+                                width: 21,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: ColorApp.abu,
+                                  shape: BoxShape.circle
+                                ),
+                                child: Icon(Icons.arrow_forward, size: 14,),
+                              ),
                             )
                           ],
                         ),
                       ),
                     );
                   },
+                ),
+                
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    teksMainScreen("Terbaru", fs: 12, fw: FontWeight.w600),
+                    teksMainScreen("Lihat semua", fs: 10, fw: FontWeight.w300),
+                  ],
+                ),
+
+                Expanded(
+                  child: tampilanDaftar(0),
                 )
+
               ],
             ),
           )
@@ -186,26 +194,24 @@ class _HomeScreenState extends State<HomeScreen> {
       //   ],
       // ),
       
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          dialogTambahDataIH(context);
-        },
-        backgroundColor: Colors.white,
-        shape: CircleBorder(side: BorderSide(width: 1)),
-        child: Icon(Icons.add, color: Colors.black, size: 40,),
+      floatingActionButton: SizedBox(
+        height: 40,
+        width: 40,
+        child: FittedBox(
+          child: FloatingActionButton(
+            onPressed: () {
+              dialogTambahDataIH(context);
+            },
+            backgroundColor: Colors.white,
+            shape: CircleBorder(side: BorderSide(width: 1)),
+            child: Icon(Icons.add, color: Colors.black, size: 40,),
+          ),
+        ),
       ),
     );
   }
 
-  Text teksMainScreen(String text, {FontWeight? fw, double? fs}) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontWeight: fw,
-        fontSize: fs
-      ),
-    );
-  }
+  
 
   Future<dynamic> dialogTambahDataIH(BuildContext context) {
     return showDialog(context: context, builder: (context) { 

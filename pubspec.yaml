@@ -35,6 +35,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.5.2
+  intl: ^0.20.2
+  sqflite: ^2.4.2
   # flutter_native_splash: ^2.4.5
 
 dev_dependencies:
@@ -79,10 +81,14 @@ flutter:
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter/Inter_24pt-Regular.ttf
+        - asset: assets/fonts/Inter/Inter_24pt-Light.ttf
+          weight: 300
         - asset: assets/fonts/Inter/Inter_24pt-ExtraLight.ttf
           weight: 200
         - asset: assets/fonts/Inter/Inter_24pt-Medium.ttf
           weight: 500
+        - asset: assets/fonts/Inter/Inter_24pt-SemiBold.ttf
+          weight: 600
         - asset: assets/fonts/Inter/Inter_24pt-Bold.ttf
           weight: 700
     - family: Kavoon
