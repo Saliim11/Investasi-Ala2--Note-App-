@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:investasi_ala_ala/data/data_list.dart';
+import 'package:investasi_ala_ala/data/dummy_data.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 
 Future<dynamic> sudahBayarDialog(BuildContext context, int jenis, int index, {required void Function()? onPressed}) {

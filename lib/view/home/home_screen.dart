@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:investasi_ala_ala/data/data_list.dart';
+import 'package:investasi_ala_ala/data/dummy_data.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/view/home/widgets/daftar.dart';
