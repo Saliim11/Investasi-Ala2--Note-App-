@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:investasi_ala_ala/data/db_helper.dart';
 import 'package:investasi_ala_ala/data/dummy_data.dart';
@@ -7,6 +8,7 @@ import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/detail/detail_note_screen.dart';
 import 'package:investasi_ala_ala/view/home/widgets/daftar.dart';
 import 'package:investasi_ala_ala/view/home/widgets/dialog.dart';
+import 'package:investasi_ala_ala/view/home/widgets/drop_down_item.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -46,8 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    DbHelper help = DbHelper();
-    Future<List<Investasi>> listInvestasiS = help.getInvestasi();
+    DbHelper db = DbHelper();
+    Future<List<Investasi>> listInvestasiS = db.getInvestasi();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -144,9 +146,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: FutureBuilder(
                     future: listInvestasiS,
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
+                      if(snapshot.data!.isEmpty) {
+                        return Center(child: Teks.spesial("udah nda ada plus minus lagi duidnya"));
+                      } else if (snapshot.connectionState == ConnectionState.done) {
                         return ListView.builder(
-                          reverse: true,
+                          // reverse: true,
                           shrinkWrap: true,
                           padding: EdgeInsets.symmetric(vertical: 8.0),
                           itemCount: snapshot.data?.length ?? 0,
@@ -177,15 +181,53 @@ class _HomeScreenState extends State<HomeScreen> {
                                         shape: BoxShape.circle,
                                         color: ColorApp.kuning
                                       ),
-                                      child: Icon(Icons.more_vert_outlined, size: 16,),
-                                    )
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton2(
+                                          customButton: const Icon(Icons.more_vert_outlined, size: 16),
+                                          items: [
+                                            ...MenuItems.firstItems.map(
+                                              (item) => DropdownMenuItem<MenuItem>(
+                                                value: item,
+                                                child: MenuItems.buildItem(item),
+                                              ),
+                                            ),
+                                            const DropdownMenuItem<Divider>(enabled: false, child: Divider(color: Colors.black,)),
+                                            ...MenuItems.secondItems.map(
+                                              (item) => DropdownMenuItem<MenuItem>(
+                                                value: item,
+                                                child: MenuItems.buildItem(item),
+                                              ),
+                                            ),
+                                          ],
+                                          onChanged: (value) {
+                                            MenuItems.onChanged(context, value! as MenuItem, snapshot.data![index].id!);
+                                            setState(() {});
+                                          },
+                                          dropdownStyleData: DropdownStyleData(
+                                            width: 84,
+                                            // padding: const EdgeInsets.symmetric(vertical: 6),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                            ),
+                                            offset: const Offset(0, 8),
+                                          ),
+                                          menuItemStyleData: MenuItemStyleData(
+                                          customHeights: [
+                                            ...List<double>.filled(MenuItems.firstItems.length, 24),
+                                            8,
+                                            ...List<double>.filled(MenuItems.secondItems.length, 24),
+                                          ],
+                                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                                        ),
+                                      ),
+                                    ),
+                                    ),
                                   ],
                                 ),
                         
                                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 
                                 DetailNoteScreen(invest: snapshot.data![index]),)),
                                 onLongPress: () {
-                                  DbHelper db = DbHelper();
                                   db.updatePrio(snapshot.data![index].id!, isPrio);
                                   setState(() {});
                                 }
@@ -195,8 +237,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             
                           },
                         );
-                      } else if(snapshot.data== []|| snapshot.data == null) {
-                        return Teks.spesial("Data kosong");
                       } else {
                         return Center(
                           child: CircularProgressIndicator(),
@@ -219,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: FittedBox(
           child: FloatingActionButton(
             onPressed: () {
-              dialogTambahDataIH(context, help, _contNama, _contNominal);
+              dialogTambahDataIH(context, db, _contNama, _contNominal);
             },
             backgroundColor: Colors.white,
             shape: CircleBorder(side: BorderSide(width: 1)),

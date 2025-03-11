@@ -153,7 +153,12 @@ Future<dynamic> dialogTambahDataIH(BuildContext context, DbHelper help, TextEdit
             ),
             child: Text("Simpan"),
           ),
-          TextButton(onPressed: () => Navigator.pop(context), child: Text("Skip"))
+          TextButton(onPressed: () {
+            _contNama.clear();
+            _contNominal.clear();
+             Navigator.pop(context);
+          }, 
+          child: Text("Skip"))
         ],
       );
     });

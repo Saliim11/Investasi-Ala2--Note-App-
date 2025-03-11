@@ -6,21 +6,22 @@ class DbHelper {
   
   static Future<Database> openDB() async {
     return await openDatabase(
-    join(await getDatabasesPath(), 'db_investasi.db'),
+      join(await getDatabasesPath(), 'db_investasi.db'),
 
-    onCreate: (db, version) {
-      return db.execute(
-        'CREATE TABLE IF NOT EXISTS investasi(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nama TEXT, nominal REAL, deskripsi TEXT, tglMulai TEXT, deadline TEXT, isPrio INTEGER, isInvest INTEGER)',
-      );
-    },
-    onUpgrade: (db, oldVersion, newVersion) async {
-      await db.execute("DROP TABLE IF EXISTS investasi");
-      return db.execute(
-        'CREATE TABLE IF NOT EXISTS investasi(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nama TEXT, nominal REAL, deskripsi TEXT, tglMulai TEXT, deadline TEXT, isPrio INTEGER, isInvest INTEGER)',
-      );
-    },
-    version: 3
-  );
+      onCreate: (db, version) {
+        return db.execute(
+          'CREATE TABLE IF NOT EXISTS investasi(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nama TEXT, nominal REAL, deskripsi TEXT, tglMulai TEXT, deadline TEXT, isPrio INTEGER, isInvest INTEGER)',
+        );
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        await db.execute("DROP TABLE IF EXISTS investasi");
+        return db.execute(
+          'CREATE TABLE IF NOT EXISTS investasi(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nama TEXT, nominal REAL, deskripsi TEXT, tglMulai TEXT, deadline TEXT, isPrio INTEGER, isInvest INTEGER)',
+        );
+      },
+      
+      version: 3
+    );
   }
 
   Future<bool> insertInvestasi(Investasi inv) async {
@@ -86,9 +87,15 @@ class DbHelper {
     );
   }
 
-  
+  Future<void> deleteInvestasi(int id) async{
+    final db = await openDB();
 
-
+    db.delete(
+      "investasi",
+      where: 'id = ?',
+      whereArgs: [id]
+    );
+  }
 
 
 }
