@@ -1,12 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:investasi_ala_ala/data/db_helper.dart';
-import 'package:investasi_ala_ala/data/dummy_data.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/detail/detail_note_screen.dart';
-import 'package:investasi_ala_ala/view/home/widgets/daftar.dart';
 import 'package:investasi_ala_ala/view/home/widgets/dialog.dart';
 import 'package:investasi_ala_ala/view/home/widgets/drop_down_item.dart';
 
@@ -25,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final TextEditingController _contNama = TextEditingController();
   final TextEditingController _contNominal = TextEditingController();
+  final TextEditingController _cont = TextEditingController();
 
   // void _changePage(int index) {
   //   setState(() {
@@ -43,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    listPrioritas = listInvestasi.where((element) => element.isPrio == true).toList();
   }
 
   @override
@@ -89,48 +87,71 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
 
-                GridView.builder(
-                  padding: EdgeInsets.only(bottom: 8),
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: listPrioritas.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.7,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10
-                  ), 
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 3,
-                      shape: BeveledRectangleBorder(),
-                      color: ColorApp.kuning,
-                      child: Container(
-                        height: 20,
-                        padding: EdgeInsets.all(8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Teks.biasa("Save money to ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
-                            Teks.biasa("Deadline: ${listPrioritas[index].deadline}", fw: FontWeight.w200, fs: 10),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Container(
-                                height: 21,
-                                width: 21,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: ColorApp.abu,
-                                  shape: BoxShape.circle
+                Container(
+                  constraints: BoxConstraints(
+                    minHeight: 220
+                  ),
+                  child: FutureBuilder(
+                    future: listInvestasiS,
+                    builder:(context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }else if(snapshot.data!.isEmpty){
+                        return Center(child: Teks.spesial("Anda tidak ada catatan pulak"));
+                      } else {
+                        listPrioritas = snapshot.data!.where((element) => element.isPrio == true).toList();
+                        if (listPrioritas.isEmpty) {
+                          return Center(child: Teks.spesial("Tidak ada yang diprioritaskan"));
+                        } else {
+                          return GridView.builder(
+                            padding: EdgeInsets.only(bottom: 8),
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: listPrioritas.length > 4 ? 4 : listPrioritas.length,
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 1.7,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10
+                            ), 
+                            itemBuilder: (context, index) {
+                              return Card(
+                                elevation: 3,
+                                shape: BeveledRectangleBorder(),
+                                color: ColorApp.kuning,
+                                child: Container(
+                                  height: 20,
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Teks.biasa("Save money to ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
+                                      Teks.biasa("Deadline: ${listPrioritas[index].deadline}", fw: FontWeight.w200, fs: 10),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Container(
+                                          height: 21,
+                                          width: 21,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: ColorApp.abu,
+                                            shape: BoxShape.circle
+                                          ),
+                                          child: Icon(Icons.arrow_forward, size: 14,),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                child: Icon(Icons.arrow_forward, size: 14,),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                              );
+                            },
+                          );
+
+                        }
+                  
+                      }
+                    } 
+                  ),
                 ),
                 
                 Row(
