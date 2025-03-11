@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:investasi_ala_ala/data/db_helper.dart';
-import 'package:investasi_ala_ala/data/dummy_data.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
@@ -20,7 +18,7 @@ Widget tampilanDaftar(int jenis, Future<List<Investasi>> listInvestasi) {
             itemCount: snapshot.data?.length ?? 0,
             itemBuilder: (BuildContext context, int index) {
               String namaTerkait = snapshot.data?[index].nama ?? "";
-              double nominalUang = snapshot.data?[index].nominal ?? 0;
+              // double nominalUang = snapshot.data?[index].nominal ?? 0;
               String tgl = snapshot.data?[index].tglMulai ?? "";
               bool isPrio = snapshot.data?[index].isPrio ?? false;
               bool isInvest = snapshot.data?[index].isInvest ?? false;
@@ -52,11 +50,11 @@ Widget tampilanDaftar(int jenis, Future<List<Investasi>> listInvestasi) {
           
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 
                   DetailNoteScreen(invest: snapshot.data![index]),)),
-                  // onLongPress: () {
-                  //   setState((){
-                  //     listInvestasi[index].isPrio = !listInvestasi[index].isPrio;
-                  //   });
-                  // }
+                  onLongPress: () async{
+                    DbHelper db = DbHelper();
+                    await db.updatePrio(snapshot.data![index].id!, isPrio);
+                    setState(() {});
+                  }
                   
                 ),
               );
@@ -75,14 +73,3 @@ Widget tampilanDaftar(int jenis, Future<List<Investasi>> listInvestasi) {
     ),
   );
 }
-
-
-// onTap: () {
-              //   sudahBayarDialog(context, jenis, index,
-              //   onPressed: () {
-              //     setState(() {
-              //       listInvestasi.removeAt(index);
-              //     });
-              //     Navigator.pop(context);
-              //   });
-              // },

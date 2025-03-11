@@ -19,9 +19,9 @@ class _DetailNoteScreenState extends State<DetailNoteScreen> {
       body: Column(
         children: [
           Text("Nominal : ${widget.invest.nominal}"),
-          widget.invest.deskripsi == null ? Text("Deskripsi tidak ada"): Text("Deskripsi ${widget.invest.deskripsi}"),
+          Text("Deskripsi ${widget.invest.deskripsi}"),
           Text("Tanggal transaksi : ${widget.invest.tglMulai}"),
-          widget.invest.deadline == null ? Text("Tidak ada waktu deadline") : Text("Deadline : ${widget.invest.deadline}")
+          Text("Deadline : ${widget.invest.deadline}")
         ],
       ),
     );

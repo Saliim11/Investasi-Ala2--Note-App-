@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:investasi_ala_ala/data/db_helper.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/home_screen.dart';

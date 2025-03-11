@@ -71,8 +71,19 @@ class DbHelper {
         in investasiMaps)
         Investasi(id: id, nama: nama, nominal: nominal, deskripsi: deskripsi, tglMulai: tglMulai, deadline: deadline, isPrio: isPrio==1 ? true:false, isInvest: isInvest==1 ? true:false),
     ];
+  }
 
-    
+  Future<void> updatePrio(int id, bool isPrio) async{
+    final db = await openDB();
+
+    db.update(
+      "investasi", 
+      {
+        "isPrio": isPrio? 0 : 1
+      },
+      where: 'id = ?',
+      whereArgs: [id]
+    );
   }
 
   
