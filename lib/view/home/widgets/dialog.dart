@@ -241,9 +241,9 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
                       SizedBox(height: 10),
                       textfieldTemp("Nominal", "Masukkan nominal", cont: cNominal),
                       SizedBox(height: 10),
-                      textfieldTemp("Tanggal Dimulai", "Masukkan tanggal", cont: cTglMulai),
+                      textfieldDatePick(context, "Tanggal Dimulai", "Masukkan tanggal", cont: cTglMulai),
                       SizedBox(height: 10),
-                      textfieldTemp("Batas Waktu", "Masukkan deadline", cont: cDeadline),
+                      textfieldDatePick(context, "Batas Waktu", "Masukkan deadline", cont: cDeadline),
                       SizedBox(height: 10),
                       textfieldTemp("Deskripsi", "Silahkan masukkan deskripsi\nsingkat data anda !", tinggi: 98, cont: cDeskripsi),
                     ],
@@ -291,11 +291,11 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
                                 height: 27,
                                 child: ElevatedButton(
                                   onPressed: () async{
+                                    bool result;
                                     if (isEdit) {
-                                      
-                                      
+                                      bool isInvest = selectedCatg == itemss.first;
+                                      await db.updateInvest(id!, nama: cNama.text, nominal: double.parse(cNominal.text), isInvest: isInvest, tglMulai: cTglMulai.text, deadline: cDeadline.text, deskripsi: cDeskripsi.text);
                                     } else {
-                                      bool result;
                                       if (selectedCatg == itemss.first) {
                                         result = await db.insertInvestasi(
                                           Investasi(nama: cNama.text, nominal: double.parse(cNominal.text), deskripsi: cDeskripsi.text, tglMulai: cTglMulai.text, deadline: cDeadline.text, isPrio: false, isInvest: true)
@@ -305,12 +305,11 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
                                           Investasi(nama: cNama.text, nominal: double.parse(cNominal.text), deskripsi: cDeskripsi.text, tglMulai: cTglMulai.text, deadline: cDeadline.text, isPrio: false, isInvest: false)
                                         );
                                       }
-          
                                       if (result == true) {
                                         print("Berhasil kirim data");
                                       }
-
                                     }
+                                    
         
                                     resetCont();
                                     Navigator.pop(context);
@@ -367,6 +366,57 @@ Row textfieldTemp(String title, String ht, {required TextEditingController cont 
               fillColor: Colors.white,
             ),
             maxLines: null,
+          ),
+        ),
+      )
+    ],
+  );
+}
+Row textfieldDatePick(BuildContext context, String title, String ht, {required TextEditingController cont ,double? tinggi = 30}) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Expanded(
+        flex: 2, 
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Teks.biasa("$title *", fs: 11
+          )
+        )
+      ),
+      Expanded(
+        flex: 3,
+        child: SizedBox(
+          height: tinggi,
+          child: GestureDetector(
+            onTap: () async{
+              DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2030),
+            );
+            if (pickedDate != null) {
+              String formattedDate = DateFormat("dd MMM yyyy").format(pickedDate);
+              cont.text = formattedDate;
+            }
+            },
+            child: AbsorbPointer(
+              child: TextField(
+                controller: cont,
+                style: TextStyle(fontSize: 12),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: ht,
+                  hintStyle: TextStyle(
+                    fontSize: 12
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                maxLines: null,
+              ),
+            ),
           ),
         ),
       )

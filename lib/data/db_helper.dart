@@ -87,17 +87,39 @@ class DbHelper {
     );
   }
   
-  Future<void> updateInvest(int id, bool isPrio) async{
-    final db = await openDB();
+  Future<bool> updateInvest(int id, 
+  {
+    required String nama,
+    required double nominal,
+    required bool isInvest,
+    required String tglMulai,
+    required String deadline,
+    required String deskripsi
+  }) async{
 
-    db.update(
-      "investasi", 
-      {
-        "isPrio": isPrio? 0 : 1
-      },
-      where: 'id = ?',
-      whereArgs: [id]
-    );
+    final db = await openDB();
+    try {
+      db.update(
+        "investasi", 
+        {
+          'nama': nama, 
+          'nominal': nominal,
+          'deskripsi': deskripsi,
+          'tglMulai': tglMulai,
+          'deadline': deadline,
+          'isInvest': isInvest ? 1 : 0,
+        },
+        where: 'id = ?',
+        whereArgs: [id]
+      );
+      print("Berhasil update data");
+
+      return true;
+      
+    } catch (e) {
+      print("gagal update data : $e");
+      return false;
+    }
   }
 
   Future<void> deleteInvestasi(int id) async{

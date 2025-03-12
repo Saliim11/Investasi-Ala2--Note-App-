@@ -24,30 +24,23 @@ class _SplashScreenState extends State<SplashScreen> {
             Image.asset("assets/image/welcome.png"),
             SizedBox(height: 60,),
             
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(98)
-                ),
-                foregroundColor: Colors.black,
-                backgroundColor: ColorApp.kuning
-              ),
-              child: Teks.biasa("Mulai aja dulu")
-            ),
-            Container(
-              alignment: Alignment.center,
+            SizedBox(
               height: 50,
               width: 239,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(98),
-                color: ColorApp.kuning,
-
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(98)
+                  ),
+                  foregroundColor: Colors.black,
+                  backgroundColor: ColorApp.kuning
+                ),
+                child: Teks.biasa("Mulai aja dulu!", fs: 16, fw: FontWeight.w500)
               ),
-              child: Teks.biasa("Mulai aja dulu!", fs: 16, fw: FontWeight.w500),
-            )
+            ),
           ],
         ),
       ),

@@ -16,26 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-  
-
-  // int _selectedPage = 0;
-
-  final TextEditingController _contNama = TextEditingController();
-  final TextEditingController _contNominal = TextEditingController();
-  final TextEditingController _cont = TextEditingController();
-
-  // void _changePage(int index) {
-  //   setState(() {
-  //     _selectedPage = index;
-  //   });
-  // }
-
-  // void _changePriority(int index){
-  //   setState(() {
-  //     listInvestasi[index].isPrio = true;
-  //   });
-  // }
   List<Investasi> listPrioritas = [];
 
   @override
