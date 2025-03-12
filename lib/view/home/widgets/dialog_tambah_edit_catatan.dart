@@ -6,6 +6,8 @@ import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 
+String? selectedCatg;
+
 Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
 { int? id, String? nama, double? nominal, bool? isInvest, String? tglMulai, String? deadline, String? deskripsi, bool? isEdit = false }) {
   
@@ -18,7 +20,6 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
   TextEditingController cTglMulai = TextEditingController();
   TextEditingController cDeadline = TextEditingController();
   TextEditingController cDeskripsi = TextEditingController();
-  String? selectedCatg;
 
   if (isEdit!) {
     cNama = TextEditingController(text: nama);
@@ -76,7 +77,7 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
                     children: [
                       textfieldTemp("A/N", "Masukkan nama", cont: cNama, isText: true),
                       SizedBox(height: 10),
-                      isEdit ? dropDownTemp("Catatan untuk", "Pilih tujuan catatan", itemss, selectedCatg, isEdit: isEdit, isInvest: isInvest) : dropDownTemp("Catatan untuk", "Pilih tujuan catatan", itemss, selectedCatg),
+                      isEdit ? dropDownTemp("Catatan untuk", "Pilih tujuan catatan", itemss, isEdit: isEdit, isInvest: isInvest) : dropDownTemp("Catatan untuk", "Pilih tujuan catatan", itemss),
                       SizedBox(height: 10),
                       textfieldTemp("Nominal", "Masukkan nominal", cont: cNominal, isText: false),
                       SizedBox(height: 10),
@@ -134,6 +135,7 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
                                     if (isEdit) {
                                       bool isInvest = selectedCatg == itemss.first;
                                       await db.updateInvest(id!, nama: cNama.text, nominal: double.parse(cNominal.text), isInvest: isInvest, tglMulai: cTglMulai.text, deadline: cDeadline.text, deskripsi: cDeskripsi.text);
+                                      Future.delayed(Duration(seconds: 3));
                                     } else {
                                       if (selectedCatg == itemss.first) {
                                         result = await db.insertInvestasi(
@@ -265,7 +267,7 @@ Row textfieldDatePick(BuildContext context, String title, String ht, {required T
   );
 }
 
-Row dropDownTemp(String title, String ht, List itemss, String? selected, {bool? isEdit = false, bool? isInvest}) {
+Row dropDownTemp(String title, String ht, List itemss, {bool? isEdit = false, bool? isInvest}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -310,7 +312,8 @@ Row dropDownTemp(String title, String ht, List itemss, String? selected, {bool? 
                 .toList(),
             onChanged: (value) {
               //Do something when selected item is changed.
-              selected = value.toString();
+              selectedCatg = value.toString();
+              print("isi kategori : $selectedCatg");
             },
             onSaved: (value) {
               
