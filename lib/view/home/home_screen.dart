@@ -1,11 +1,11 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:investasi_ala_ala/data/db_helper.dart';
+import 'package:investasi_ala_ala/database/db_helper.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/detail/detail_note_screen.dart';
-import 'package:investasi_ala_ala/view/home/widgets/dialog.dart';
+import 'package:investasi_ala_ala/view/home/widgets/dialog_tambah_edit_catatan.dart';
 import 'package:investasi_ala_ala/view/home/widgets/drop_down_item.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -95,17 +95,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisSpacing: 10
                             ), 
                             itemBuilder: (context, index) {
+                              bool isInvest = listPrioritas[index].isInvest;
+
                               return Card(
                                 elevation: 3,
                                 shape: BeveledRectangleBorder(),
-                                color: ColorApp.kuning,
+                                color: isInvest ? ColorApp.oren :ColorApp.kuning,
                                 child: Container(
                                   height: 20,
                                   padding: EdgeInsets.all(8),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Teks.biasa("Save money to ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
+                                      isInvest ?
+                                      Teks.biasa("Ada duid di ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12) :
+                                      Teks.biasa("ada utang di ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
+                                      
                                       Teks.biasa("Deadline: ${listPrioritas[index].deadline}", fw: FontWeight.w200, fs: 10),
                                       Align(
                                         alignment: Alignment.centerRight,

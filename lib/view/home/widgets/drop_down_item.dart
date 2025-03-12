@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:investasi_ala_ala/data/db_helper.dart';
+import 'package:investasi_ala_ala/database/db_helper.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
-import 'package:investasi_ala_ala/view/home/widgets/dialog.dart';
+import 'package:investasi_ala_ala/view/home/widgets/dialog_tambah_edit_catatan.dart';
 
 class MenuItem {
   const MenuItem({

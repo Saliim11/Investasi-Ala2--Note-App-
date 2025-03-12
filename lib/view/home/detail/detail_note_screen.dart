@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
+import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 
 class DetailNoteScreen extends StatefulWidget {
   const DetailNoteScreen({super.key, required this.invest, });
@@ -14,15 +15,38 @@ class _DetailNoteScreenState extends State<DetailNoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Detailed A.N ${widget.invest.nama}"),
+        title: Teks.spesial("A.N ${widget.invest.nama}"),
       ),
-      body: Column(
-        children: [
-          Text("Nominal : ${widget.invest.nominal}"),
-          Text("Deskripsi ${widget.invest.deskripsi}"),
-          Text("Tanggal transaksi : ${widget.invest.tglMulai}"),
-          Text("Deadline : ${widget.invest.deadline}")
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Expanded(child: Teks.spesial("Nominal :")),
+                Expanded(child: Teks.spesial("${widget.invest.nominal}")),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(child: Teks.spesial("Deskripsi :")),
+                Expanded(child: Teks.spesial(widget.invest.deskripsi)),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(child: Teks.spesial("Tanggal transaksi :")),
+                Expanded(child: Teks.spesial(widget.invest.tglMulai)),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(child: Teks.spesial("Deadline :")),
+                Expanded(child: Teks.spesial(widget.invest.deadline))
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

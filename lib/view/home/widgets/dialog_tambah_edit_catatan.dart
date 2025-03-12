@@ -22,7 +22,7 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
 
   if (isEdit!) {
     cNama = TextEditingController(text: nama);
-    cNominal = TextEditingController(text: "$nominal");
+    cNominal = TextEditingController(text: "${nominal!.round()}");
     cTglMulai = TextEditingController(text: tglMulai);
     cDeadline = TextEditingController(text: deadline);
     cDeskripsi = TextEditingController(text: deskripsi);
@@ -74,17 +74,17 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      textfieldTemp("A/N", "Masukkan nama", cont: cNama),
+                      textfieldTemp("A/N", "Masukkan nama", cont: cNama, isText: true),
                       SizedBox(height: 10),
                       isEdit ? dropDownTemp("Catatan untuk", "Pilih tujuan catatan", itemss, selectedCatg, isEdit: isEdit, isInvest: isInvest) : dropDownTemp("Catatan untuk", "Pilih tujuan catatan", itemss, selectedCatg),
                       SizedBox(height: 10),
-                      textfieldTemp("Nominal", "Masukkan nominal", cont: cNominal),
+                      textfieldTemp("Nominal", "Masukkan nominal", cont: cNominal, isText: false),
                       SizedBox(height: 10),
                       textfieldDatePick(context, "Tanggal Dimulai", "Masukkan tanggal", cont: cTglMulai),
                       SizedBox(height: 10),
                       textfieldDatePick(context, "Batas Waktu", "Masukkan deadline", cont: cDeadline),
                       SizedBox(height: 10),
-                      textfieldTemp("Deskripsi", "Silahkan masukkan deskripsi\nsingkat data anda !", tinggi: 98, cont: cDeskripsi),
+                      textfieldTemp("Deskripsi", "Silahkan masukkan deskripsi\nsingkat data anda !", tinggi: 98, cont: cDeskripsi, isText: true),
                     ],
                   ),
                 ),
@@ -145,9 +145,10 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
                                         );
                                       }
                                       if (result == true) {
-                                        print("Berhasil kirim data");
+                                        print("Berhasil kirim data : $selectedCatg ${selectedCatg == itemss.first}");
                                       }
                                     }
+                                    print("Berhasil kirim data : $selectedCatg ${selectedCatg == itemss.first}");
                                     
         
                                     resetCont();
@@ -176,7 +177,7 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
     });
   }
 
-Row textfieldTemp(String title, String ht, {required TextEditingController cont ,double? tinggi = 30}) {
+Row textfieldTemp(String title, String ht, {required TextEditingController cont, required bool isText ,double? tinggi = 30}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -193,6 +194,7 @@ Row textfieldTemp(String title, String ht, {required TextEditingController cont 
         child: SizedBox(
           height: tinggi,
           child: TextField(
+            keyboardType: isText ? TextInputType.text : TextInputType.number,
             controller: cont,
             style: TextStyle(fontSize: 12),
             decoration: InputDecoration(
@@ -211,7 +213,7 @@ Row textfieldTemp(String title, String ht, {required TextEditingController cont 
     ],
   );
 }
-Row textfieldDatePick(BuildContext context, String title, String ht, {required TextEditingController cont ,double? tinggi = 30}) {
+Row textfieldDatePick(BuildContext context, String title, String ht, {required TextEditingController cont}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -226,7 +228,7 @@ Row textfieldDatePick(BuildContext context, String title, String ht, {required T
       Expanded(
         flex: 3,
         child: SizedBox(
-          height: tinggi,
+          height: 30,
           child: GestureDetector(
             onTap: () async{
               DateTime? pickedDate = await showDatePicker(
