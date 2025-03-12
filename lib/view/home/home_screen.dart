@@ -167,9 +167,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: FutureBuilder(
                     future: listInvestasiS,
                     builder: (context, snapshot) {
-                      if(snapshot.data!.isEmpty) {
+                      if(snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+
+                      } else if(snapshot.data!.isEmpty) {
                         return Center(child: Teks.spesial("udah nda ada plus minus lagi duidnya"));
-                      } else if (snapshot.connectionState == ConnectionState.done) {
+                      } else {
                         return ListView.builder(
                           // reverse: true,
                           shrinkWrap: true,
@@ -221,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ],
                                           onChanged: (value) {
-                                            MenuItems.onChanged(context, value! as MenuItem, snapshot.data![index].id!);
+                                            MenuItems.onChanged(context, value! as MenuItem, inv: snapshot.data![index]);
                                             setState(() {});
                                           },
                                           dropdownStyleData: DropdownStyleData(
@@ -239,10 +244,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ...List<double>.filled(MenuItems.secondItems.length, 24),
                                           ],
                                           padding: const EdgeInsets.symmetric(horizontal: 0),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                    ),
+
                                   ],
                                 ),
                         
@@ -258,16 +264,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             
                           },
                         );
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-
-                      }
+                      } 
                     }, 
                   ),
                 )
-
               ],
             ),
           )
@@ -280,7 +280,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: FittedBox(
           child: FloatingActionButton(
             onPressed: () {
-              dialogTambahDataIH(context, db, _contNama, _contNominal);
+              // dialogTambahDataIH(context, db, _contNama, _contNominal);
+              tambahEditCatatanDialog(context, db);
             },
             backgroundColor: Colors.white,
             shape: CircleBorder(side: BorderSide(width: 1)),

@@ -86,6 +86,19 @@ class DbHelper {
       whereArgs: [id]
     );
   }
+  
+  Future<void> updateInvest(int id, bool isPrio) async{
+    final db = await openDB();
+
+    db.update(
+      "investasi", 
+      {
+        "isPrio": isPrio? 0 : 1
+      },
+      where: 'id = ?',
+      whereArgs: [id]
+    );
+  }
 
   Future<void> deleteInvestasi(int id) async{
     final db = await openDB();
