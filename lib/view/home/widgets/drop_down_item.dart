@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:investasi_ala_ala/database/db_helper.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
+import 'package:investasi_ala_ala/service/provider_handler.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/widgets/dialog_tambah_edit_catatan.dart';
 
@@ -36,7 +37,7 @@ abstract class MenuItems {
     );
   }
 
-  static void onChanged(BuildContext context, MenuItem item, {required Investasi inv}) async{
+  static void onChanged(BuildContext context, MenuItem item, InvestasiProvider prov, {required Investasi inv}) async{
     DbHelper db = DbHelper();
 
     switch (item) {
@@ -53,7 +54,7 @@ abstract class MenuItems {
         );
         break;
       case MenuItems.delete:
-        await db.deleteInvestasi(inv.id!);
+        prov.deleteItem(inv.id!);
         break;
     }
   }

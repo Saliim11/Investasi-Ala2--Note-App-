@@ -19,4 +19,13 @@ class InvestasiProvider with ChangeNotifier{
     _listInvestasi = await db.getInvestasi();
     notifyListeners();
   }
+
+  void changePrio(int id, bool isPrio) {
+    db.updatePrio(id, isPrio);
+    getListInvestasi();
+  }
+  void deleteItem(int id) {
+    db.deleteInvestasi(id);
+    getListInvestasi();
+  }
 }

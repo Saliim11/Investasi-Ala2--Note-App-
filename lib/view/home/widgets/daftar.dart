@@ -18,7 +18,7 @@ Widget tampilanDaftar(int jenis, InvestasiProvider prov, DbHelper db) {
 
   if (list == [] || list.isEmpty) {
     print(list);
-    return Center(child: Teks.spesial("udah nda ada plus minus lagi duidnya"));
+    return Center(child: Teks.spesial("udah nda ada plus minus lagi duidnya",));
     
   } else {
     return ListView.builder(
@@ -72,8 +72,7 @@ Widget tampilanDaftar(int jenis, InvestasiProvider prov, DbHelper db) {
                         ),
                       ],
                       onChanged: (value) {
-                        MenuItems.onChanged(context, value! as MenuItem, inv: list[index]);
-                        // setState(() {});
+                        MenuItems.onChanged(context, value! as MenuItem, prov, inv: list[index]);
                       },
                       dropdownStyleData: DropdownStyleData(
                         width: 84,
@@ -101,8 +100,7 @@ Widget tampilanDaftar(int jenis, InvestasiProvider prov, DbHelper db) {
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 
             DetailNoteScreen(invest: list[index]),)),
             onLongPress: () {
-              db.updatePrio(list[index].id!, isPrio);
-              // setState(() {});
+              prov.changePrio(list[index].id!, isPrio);
             }
             
           ),
