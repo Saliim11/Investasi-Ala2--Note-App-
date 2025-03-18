@@ -4,7 +4,7 @@ import 'package:investasi_ala_ala/model/investasi.dart';
 
 class InvestasiProvider with ChangeNotifier{
   DbHelper db = DbHelper();
-  int _isInvestTab = 1;
+  int _isInvestTab = 0;
   List<Investasi> _listInvestasi = [];
 
   int get isInvestTab => _isInvestTab;

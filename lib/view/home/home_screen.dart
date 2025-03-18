@@ -6,6 +6,7 @@ import 'package:investasi_ala_ala/service/provider_handler.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/detail/detail_note_screen.dart';
+import 'package:investasi_ala_ala/view/home/widgets/daftar.dart';
 import 'package:investasi_ala_ala/view/home/widgets/dialog_tambah_edit_catatan.dart';
 import 'package:investasi_ala_ala/view/home/widgets/drop_down_item.dart';
 import 'package:investasi_ala_ala/view/home/widgets/tab_daftar_i_h.dart';
@@ -30,8 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final prov = Provider.of<InvestasiProvider>(context);
-    List<Investasi> list = prov.listInvestasi;
     
+
     DbHelper db = DbHelper();
     Future<List<Investasi>> listInvestasiS = db.getInvestasi();
 
@@ -140,112 +141,124 @@ class _HomeScreenState extends State<HomeScreen> {
                 
                 TabDaftarIH(),
 
-                Expanded(
-                  // child: tampilanDaftar(0, listInvestasiS),
-                  child: FutureBuilder(
-                    future: listInvestasiS,
-                    builder: (context, snapshot) {
-                      if(snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                IndexedStack(
+                  index: prov.isInvestTab,
+                  children: [
+                    Expanded(
+                      child: tampilanDaftar(0, prov, db),
+                    ), 
+                    Expanded(
+                      child: tampilanDaftar(1, prov, db),
+                    ), 
+                  ],
+                ),
 
-                      } else if(snapshot.data!.isEmpty) {
-                        return Center(child: Teks.spesial("udah nda ada plus minus lagi duidnya"));
-                      } else {
-                        return ListView.builder(
-                          // reverse: true,
-                          shrinkWrap: true,
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          itemCount: snapshot.data?.length ?? 0,
-                          itemBuilder: (BuildContext context, int index) {
-                            String namaTerkait = snapshot.data?[index].nama ?? "";
-                            // double nominalUang = snapshot.data?[index].nominal ?? 0;
-                            String tgl = snapshot.data?[index].tglMulai ?? "";
-                            bool isPrio = snapshot.data?[index].isPrio ?? false;
-                            bool isInvest = snapshot.data?[index].isInvest ?? false;
-                            return Card(
-                              child: ListTile(
-                                title: isInvest ? 
-                                Teks.biasa("Investasi ke $namaTerkait", fs: 14, fw: FontWeight.w700) : 
-                                Teks.biasa("Hutang ke $namaTerkait", fs: 14, fw: FontWeight.w700),
-                                subtitle: Teks.biasa(tgl, fs: 10, fw: FontWeight.w200),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    isPrio ? 
-                                    IconButton(onPressed: null, icon: Icon(Icons.star_rate_rounded, color: ColorApp.oren,)) : 
-                                    IconButton(onPressed: null, icon: Icon(Icons.star_rate_rounded)),
-                        
-                                    Container(
-                                      height: 26,
-                                      width: 26,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: ColorApp.kuning
-                                      ),
-                                      child: DropdownButtonHideUnderline(
-                                        child: DropdownButton2(
-                                          customButton: const Icon(Icons.more_vert_outlined, size: 16),
-                                          items: [
-                                            ...MenuItems.firstItems.map(
-                                              (item) => DropdownMenuItem<MenuItem>(
-                                                value: item,
-                                                child: MenuItems.buildItem(item),
-                                              ),
-                                            ),
-                                            const DropdownMenuItem<Divider>(enabled: false, child: Divider(color: Colors.black,)),
-                                            ...MenuItems.secondItems.map(
-                                              (item) => DropdownMenuItem<MenuItem>(
-                                                value: item,
-                                                child: MenuItems.buildItem(item),
-                                              ),
-                                            ),
-                                          ],
-                                          onChanged: (value) {
-                                            MenuItems.onChanged(context, value! as MenuItem, inv: snapshot.data![index]);
-                                            setState(() {});
-                                          },
-                                          dropdownStyleData: DropdownStyleData(
-                                            width: 84,
-                                            // padding: const EdgeInsets.symmetric(vertical: 6),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                            ),
-                                            offset: const Offset(0, 8),
-                                          ),
-                                          menuItemStyleData: MenuItemStyleData(
-                                          customHeights: [
-                                            ...List<double>.filled(MenuItems.firstItems.length, 24),
-                                            8,
-                                            ...List<double>.filled(MenuItems.secondItems.length, 24),
-                                          ],
-                                          padding: const EdgeInsets.symmetric(horizontal: 0),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                // Expanded(
+                //   // child: tampilanDaftar(0, listInvestasiS),
+                //   child: FutureBuilder(
+                //     future: listInvestasiS,
+                //     builder: (context, snapshot) {
+                //       if(snapshot.connectionState == ConnectionState.waiting) {
+                //         return Center(
+                //           child: CircularProgressIndicator(),
+                //         );
 
-                                  ],
-                                ),
+                //       } else if(snapshot.data!.isEmpty) {
+                //         return Center(child: Teks.spesial("udah nda ada plus minus lagi duidnya"));
+                //       } else {
+                //         return ListView.builder(
+                //           // reverse: true,
+                //           shrinkWrap: true,
+                //           padding: EdgeInsets.symmetric(vertical: 8.0),
+                //           itemCount: snapshot.data?.length ?? 0,
+                //           itemBuilder: (BuildContext context, int index) {
+                //             String namaTerkait = snapshot.data?[index].nama ?? "";
+                //             // double nominalUang = snapshot.data?[index].nominal ?? 0;
+                //             String tgl = snapshot.data?[index].tglMulai ?? "";
+                //             bool isPrio = snapshot.data?[index].isPrio ?? false;
+                //             bool isInvest = snapshot.data?[index].isInvest ?? false;
+                //             return Card(
+                //               child: ListTile(
+                //                 title: isInvest ? 
+                //                 Teks.biasa("Investasi ke $namaTerkait", fs: 14, fw: FontWeight.w700) : 
+                //                 Teks.biasa("Hutang ke $namaTerkait", fs: 14, fw: FontWeight.w700),
+                //                 subtitle: Teks.biasa(tgl, fs: 10, fw: FontWeight.w200),
+                //                 trailing: Row(
+                //                   mainAxisSize: MainAxisSize.min,
+                //                   children: [
+                //                     isPrio ? 
+                //                     IconButton(onPressed: null, icon: Icon(Icons.star_rate_rounded, color: ColorApp.oren,)) : 
+                //                     IconButton(onPressed: null, icon: Icon(Icons.star_rate_rounded)),
                         
-                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 
-                                DetailNoteScreen(invest: snapshot.data![index]),)),
-                                onLongPress: () {
-                                  db.updatePrio(snapshot.data![index].id!, isPrio);
-                                  setState(() {});
-                                }
+                //                     Container(
+                //                       height: 26,
+                //                       width: 26,
+                //                       alignment: Alignment.center,
+                //                       decoration: BoxDecoration(
+                //                         shape: BoxShape.circle,
+                //                         color: ColorApp.kuning
+                //                       ),
+                //                       child: DropdownButtonHideUnderline(
+                //                         child: DropdownButton2(
+                //                           customButton: const Icon(Icons.more_vert_outlined, size: 16),
+                //                           items: [
+                //                             ...MenuItems.firstItems.map(
+                //                               (item) => DropdownMenuItem<MenuItem>(
+                //                                 value: item,
+                //                                 child: MenuItems.buildItem(item),
+                //                               ),
+                //                             ),
+                //                             const DropdownMenuItem<Divider>(enabled: false, child: Divider(color: Colors.black,)),
+                //                             ...MenuItems.secondItems.map(
+                //                               (item) => DropdownMenuItem<MenuItem>(
+                //                                 value: item,
+                //                                 child: MenuItems.buildItem(item),
+                //                               ),
+                //                             ),
+                //                           ],
+                //                           onChanged: (value) {
+                //                             MenuItems.onChanged(context, value! as MenuItem, inv: snapshot.data![index]);
+                //                             setState(() {});
+                //                           },
+                //                           dropdownStyleData: DropdownStyleData(
+                //                             width: 84,
+                //                             // padding: const EdgeInsets.symmetric(vertical: 6),
+                //                             decoration: BoxDecoration(
+                //                               color: Colors.white,
+                //                             ),
+                //                             offset: const Offset(0, 8),
+                //                           ),
+                //                           menuItemStyleData: MenuItemStyleData(
+                //                           customHeights: [
+                //                             ...List<double>.filled(MenuItems.firstItems.length, 24),
+                //                             8,
+                //                             ...List<double>.filled(MenuItems.secondItems.length, 24),
+                //                           ],
+                //                           padding: const EdgeInsets.symmetric(horizontal: 0),
+                //                           ),
+                //                         ),
+                //                       ),
+                //                     ),
+
+                //                   ],
+                //                 ),
+                        
+                //                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 
+                //                 DetailNoteScreen(invest: snapshot.data![index]),)),
+                //                 onLongPress: () {
+                //                   db.updatePrio(snapshot.data![index].id!, isPrio);
+                //                   setState(() {});
+                //                 }
                                 
-                              ),
-                            );
+                //               ),
+                //             );
                             
-                          },
-                        );
-                      } 
-                    }, 
-                  ),
-                )
+                //           },
+                //         );
+                //       } 
+                //     }, 
+                //   ),
+                // )
               ],
             ),
           )

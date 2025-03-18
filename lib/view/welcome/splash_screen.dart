@@ -14,17 +14,19 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
-  //   Future.delayed(Duration(seconds: 2), () => 
-  //     Future.microtask(() => 
-  //       Provider.of<InvestasiProvider>(context).getListInvestasi()
-  //     )
-  //   );
-  // }
+    Future.delayed(Duration(seconds: 2), () async{
+      Future.microtask(() => 
+        Provider.of<InvestasiProvider>(context, listen: false).getListInvestasi()
+      );
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+
+    },);
+  }
   
   @override
   Widget build(BuildContext context) {

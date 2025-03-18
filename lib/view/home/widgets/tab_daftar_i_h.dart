@@ -20,7 +20,7 @@ class TabDaftarIH extends StatelessWidget {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              provider.changeTab(1);
+              provider.changeTab(0);
             },
             child: Container(
               alignment: Alignment.center,
@@ -30,7 +30,7 @@ class TabDaftarIH extends StatelessWidget {
                   topLeft: Radius.circular(100),
                   bottomLeft: Radius.circular(100),
                 ),
-                color: isInvestTab == 1 ? ColorApp.abu : ColorApp.oren,
+                color: isInvestTab == 0 ? ColorApp.abu : ColorApp.oren,
                 boxShadow: [
                   BoxShadow(offset: Offset(0, 4), blurRadius: 4, color: Colors.black.withOpacity(0.25))
                 ]
@@ -42,7 +42,7 @@ class TabDaftarIH extends StatelessWidget {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              provider.changeTab(0);
+              provider.changeTab(1);
             },
             child: Container(
               alignment: Alignment.center,
@@ -52,7 +52,7 @@ class TabDaftarIH extends StatelessWidget {
                   topRight: Radius.circular(100),
                   bottomRight: Radius.circular(100),
                 ),
-                color: isInvestTab == 0 ? ColorApp.abu : ColorApp.oren,
+                color: isInvestTab == 1 ? ColorApp.abu : ColorApp.oren,
                 boxShadow: [
                   BoxShadow(offset: Offset(0, 4), blurRadius: 4, color: Colors.black.withOpacity(0.25))
                 ]
