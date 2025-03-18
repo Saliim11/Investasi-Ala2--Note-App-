@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:investasi_ala_ala/service/provider_handler.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/home_screen.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,6 +13,18 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+
+  //   Future.delayed(Duration(seconds: 2), () => 
+  //     Future.microtask(() => 
+  //       Provider.of<InvestasiProvider>(context).getListInvestasi()
+  //     )
+  //   );
+  // }
   
   @override
   Widget build(BuildContext context) {

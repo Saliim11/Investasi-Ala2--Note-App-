@@ -2,11 +2,14 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:investasi_ala_ala/database/db_helper.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
+import 'package:investasi_ala_ala/service/provider_handler.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/detail/detail_note_screen.dart';
 import 'package:investasi_ala_ala/view/home/widgets/dialog_tambah_edit_catatan.dart';
 import 'package:investasi_ala_ala/view/home/widgets/drop_down_item.dart';
+import 'package:investasi_ala_ala/view/home/widgets/tab_daftar_i_h.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,6 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final prov = Provider.of<InvestasiProvider>(context);
+    List<Investasi> list = prov.listInvestasi;
+    
     DbHelper db = DbHelper();
     Future<List<Investasi>> listInvestasiS = db.getInvestasi();
 
@@ -55,15 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Teks.biasa("Semua Catatan", fw: FontWeight.w700, fs: 16),
-                    
-                    Row(
-                      children: [
-                        Icon(Icons.search, color: Colors.black,),
-                        SizedBox(width: 25,),
-                        Icon(Icons.history, color: Colors.black,)
-                      ],
-                    )
+                    Teks.biasa("Prioritas", fw: FontWeight.w700, fs: 16),
                   ],
                 ),
 
@@ -97,36 +95,37 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemBuilder: (context, index) {
                               bool isInvest = listPrioritas[index].isInvest;
 
-                              return Card(
-                                elevation: 3,
-                                shape: BeveledRectangleBorder(),
-                                color: isInvest ? ColorApp.oren :ColorApp.kuning,
-                                child: Container(
-                                  height: 20,
-                                  padding: EdgeInsets.all(8),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      isInvest ?
-                                      Teks.biasa("Ada duid di ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12) :
-                                      Teks.biasa("ada utang di ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
-                                      
-                                      Teks.biasa("Deadline: ${listPrioritas[index].deadline}", fw: FontWeight.w200, fs: 10),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Container(
-                                          height: 21,
-                                          width: 21,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: ColorApp.abu,
-                                            shape: BoxShape.circle
-                                          ),
-                                          child: Icon(Icons.arrow_forward, size: 14,),
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: isInvest ? ColorApp.oren :ColorApp.kuning,
+                                  boxShadow: [
+                                    BoxShadow(offset: Offset(0, 4), blurRadius: 4, color: Colors.black.withOpacity(0.25))
+                                  ]
+                                ),
+                                height: 20,
+                                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    isInvest ?
+                                    Teks.biasa("Investasi ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12) :
+                                    Teks.biasa("Hutang ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
+                                    
+                                    Teks.biasa("Batas Akhir: ${listPrioritas[index].deadline}", fw: FontWeight.w200, fs: 10),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Container(
+                                        height: 21,
+                                        width: 21,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: ColorApp.abu,
+                                          shape: BoxShape.circle
                                         ),
-                                      )
-                                    ],
-                                  ),
+                                        child: Icon(Icons.arrow_forward, size: 14,),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               );
                             },
@@ -139,13 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Teks.biasa("Terbaru", fs: 12, fw: FontWeight.w600),
-                    Teks.biasa("Lihat semua", fs: 10, fw: FontWeight.w300),
-                  ],
-                ),
+                TabDaftarIH(),
 
                 Expanded(
                   // child: tampilanDaftar(0, listInvestasiS),
