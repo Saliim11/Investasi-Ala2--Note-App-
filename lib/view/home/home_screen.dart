@@ -160,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: FloatingActionButton(
             onPressed: () {
               // dialogTambahDataIH(context, db, _contNama, _contNominal);
-              tambahEditCatatanDialog(context, db);
+              tambahEditCatatanDialog(context, prov);
             },
             backgroundColor: Colors.white,
             shape: CircleBorder(side: BorderSide(width: 1)),

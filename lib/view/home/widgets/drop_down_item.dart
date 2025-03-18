@@ -42,7 +42,7 @@ abstract class MenuItems {
 
     switch (item) {
       case MenuItems.edit:
-        tambahEditCatatanDialog(context, db,
+        tambahEditCatatanDialog(context, prov,
           id: inv.id,
           nama: inv.nama,
           nominal: inv.nominal,

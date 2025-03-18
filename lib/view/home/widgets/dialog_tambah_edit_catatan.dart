@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:investasi_ala_ala/database/db_helper.dart';
 import 'package:investasi_ala_ala/model/investasi.dart';
+import 'package:investasi_ala_ala/service/provider_handler.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 
 String? selectedCatg;
 
-Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
+Future<dynamic> tambahEditCatatanDialog(BuildContext context, InvestasiProvider prov,
 { int? id, String? nama, double? nominal, bool? isInvest, String? tglMulai, String? deadline, String? deskripsi, bool? isEdit = false }) {
   
   final List<String> itemss = [
@@ -131,27 +132,22 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, DbHelper db,
                                 height: 27,
                                 child: ElevatedButton(
                                   onPressed: () async{
-                                    bool result;
                                     if (isEdit) {
                                       bool isInvest = selectedCatg == itemss.first;
-                                      await db.updateInvest(id!, nama: cNama.text, nominal: double.parse(cNominal.text), isInvest: isInvest, tglMulai: cTglMulai.text, deadline: cDeadline.text, deskripsi: cDeskripsi.text);
-                                      Future.delayed(Duration(seconds: 3));
+                                      prov.editInvestasi(id!, cNama.text, double.parse(cNominal.text), isInvest, cTglMulai.text, cDeadline.text, cDeskripsi.text);
+
                                     } else {
                                       if (selectedCatg == itemss.first) {
-                                        result = await db.insertInvestasi(
+                                        prov.addItemInvestasi(
                                           Investasi(nama: cNama.text, nominal: double.parse(cNominal.text), deskripsi: cDeskripsi.text, tglMulai: cTglMulai.text, deadline: cDeadline.text, isPrio: false, isInvest: true)
                                         );
                                       } else {
-                                        result = await db.insertInvestasi(
+                                        prov.addItemInvestasi(
                                           Investasi(nama: cNama.text, nominal: double.parse(cNominal.text), deskripsi: cDeskripsi.text, tglMulai: cTglMulai.text, deadline: cDeadline.text, isPrio: false, isInvest: false)
                                         );
                                       }
-                                      if (result == true) {
-                                        print("Berhasil kirim data : $selectedCatg ${selectedCatg == itemss.first}");
-                                      }
                                     }
-                                    print("Berhasil kirim data : $selectedCatg ${selectedCatg == itemss.first}");
-                                    
+                                    print("Mengirim data : $selectedCatg ${selectedCatg == itemss.first}");
         
                                     resetCont();
                                     Navigator.pop(context);
