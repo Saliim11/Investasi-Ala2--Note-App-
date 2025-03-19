@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
                       }else if(snapshot.data!.isEmpty){
-                        return Center(child: Teks.spesial("Anda tidak ada catatan pulak"));
+                        return Center(child: Teks.spesial("Kamu sedang tidak memiliki catatan apapun"));
                       } else {
                         listPrioritas = snapshot.data!.where((element) => element.isPrio == true).toList();
                         if (listPrioritas.isEmpty) {

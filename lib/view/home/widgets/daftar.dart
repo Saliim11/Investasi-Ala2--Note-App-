@@ -17,7 +17,16 @@ Widget tampilanDaftar(int jenis, InvestasiProvider prov, DbHelper db) {
   }
 
   if (list == [] || list.isEmpty) {
-    return Center(child: Teks.spesial("udah nda ada plus minus lagi duidnya",));
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset("assets/image/chick1.png"),
+          jenis == 0 ? 
+          Teks.spesial("Yeyy~ temen kamu baik semua :)",):
+          Teks.spesial("Good~ kamu udah nda ada utang",)
+        ],
+      ));
     
   } else {
     return ListView.builder(
