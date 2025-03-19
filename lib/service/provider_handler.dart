@@ -4,11 +4,14 @@ import 'package:investasi_ala_ala/model/investasi.dart';
 
 class InvestasiProvider with ChangeNotifier{
   DbHelper db = DbHelper();
+
   int _isInvestTab = 0;
   List<Investasi> _listInvestasi = [];
+  List<Investasi> _listPrioritas = [];
 
   int get isInvestTab => _isInvestTab;
   List<Investasi> get listInvestasi => _listInvestasi;
+  List<Investasi> get listPrioritas => _listPrioritas;
 
   void changeTab(int value){
     _isInvestTab = value;
@@ -17,6 +20,7 @@ class InvestasiProvider with ChangeNotifier{
 
   void getListInvestasi()async{
     _listInvestasi = await db.getInvestasi();
+    _listPrioritas = _listInvestasi.where((element) => element.isPrio == true).toList();
     notifyListeners();
   }
 

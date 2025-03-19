@@ -3,7 +3,6 @@ import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/service/provider_handler.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/widgets/dialog/dialog_delete.dart';
-import 'package:investasi_ala_ala/view/home/widgets/dialog/dialog_done.dart';
 import 'package:investasi_ala_ala/view/home/widgets/dialog/dialog_tambah_edit_catatan.dart';
 
 class MenuItem {

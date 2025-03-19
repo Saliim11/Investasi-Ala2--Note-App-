@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     DbHelper db = DbHelper();
     Future<List<Investasi>> listInvestasiS = db.getInvestasi();
+    listPrioritas = prov.listPrioritas;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -67,73 +68,57 @@ class _HomeScreenState extends State<HomeScreen> {
                   constraints: BoxConstraints(
                     minHeight: 220
                   ),
-                  child: FutureBuilder(
-                    future: listInvestasiS,
-                    builder:(context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      }else if(snapshot.data!.isEmpty){
-                        return Center(child: Teks.spesial("Kamu sedang tidak memiliki catatan apapun"));
-                      } else {
-                        listPrioritas = snapshot.data!.where((element) => element.isPrio == true).toList();
-                        if (listPrioritas.isEmpty) {
-                          return Center(child: Teks.spesial("Tidak ada yang diprioritaskan"));
-                        } else {
-                          return GridView.builder(
-                            padding: EdgeInsets.only(bottom: 8),
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: listPrioritas.length > 4 ? 4 : listPrioritas.length,
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 1.7,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10
-                            ), 
-                            itemBuilder: (context, index) {
-                              bool isInvest = listPrioritas[index].isInvest;
+                  child: listPrioritas.isEmpty ?
+                  Center(child: Teks.spesial("Tidak ada yang diprioritaskan")) :
+                  GridView.builder(
+                    padding: EdgeInsets.only(bottom: 8),
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: listPrioritas.length > 4 ? 4 : listPrioritas.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.7,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10
+                    ), 
+                    itemBuilder: (context, index) {
+                      bool isInvest = listPrioritas[index].isInvest;
 
-                              return Container(
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: isInvest ? ColorApp.oren :ColorApp.kuning,
+                          boxShadow: [
+                            BoxShadow(offset: Offset(0, 4), blurRadius: 4, color: Colors.black.withOpacity(0.25))
+                          ]
+                        ),
+                        height: 20,
+                        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            isInvest ?
+                            Teks.biasa("Investasi ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12) :
+                            Teks.biasa("Hutang ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
+                            
+                            Teks.biasa("Batas Akhir: ${listPrioritas[index].deadline}", fw: FontWeight.w200, fs: 10),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                height: 21,
+                                width: 21,
+                                alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  color: isInvest ? ColorApp.oren :ColorApp.kuning,
-                                  boxShadow: [
-                                    BoxShadow(offset: Offset(0, 4), blurRadius: 4, color: Colors.black.withOpacity(0.25))
-                                  ]
+                                  color: ColorApp.abu,
+                                  shape: BoxShape.circle
                                 ),
-                                height: 20,
-                                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    isInvest ?
-                                    Teks.biasa("Investasi ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12) :
-                                    Teks.biasa("Hutang ${listPrioritas[index].nama}", fw: FontWeight.w700, fs: 12),
-                                    
-                                    Teks.biasa("Batas Akhir: ${listPrioritas[index].deadline}", fw: FontWeight.w200, fs: 10),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Container(
-                                        height: 21,
-                                        width: 21,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          color: ColorApp.abu,
-                                          shape: BoxShape.circle
-                                        ),
-                                        child: Icon(Icons.arrow_forward, size: 14,),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-
-                        }
-                  
-                      }
-                    } 
-                  ),
+                                child: Icon(Icons.arrow_forward, size: 14,),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  )
                 ),
                 
                 TabDaftarIH(),
