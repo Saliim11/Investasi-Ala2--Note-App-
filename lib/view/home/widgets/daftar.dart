@@ -5,7 +5,7 @@ import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/service/provider_handler.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
-import 'package:investasi_ala_ala/view/home/detail/detail_note_screen.dart';
+import 'package:investasi_ala_ala/view/detail/detail_note_screen.dart';
 import 'package:investasi_ala_ala/view/home/widgets/drop_down_item.dart';
 
 Widget tampilanDaftar(int jenis, InvestasiProvider prov, DbHelper db) {
