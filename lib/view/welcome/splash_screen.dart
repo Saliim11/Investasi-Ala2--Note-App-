@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:investasi_ala_ala/service/pref_handler.dart';
 import 'package:investasi_ala_ala/service/provider_handler.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
 import 'package:investasi_ala_ala/view/home/home_screen.dart';
+import 'package:investasi_ala_ala/view/welcome/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,11 +21,16 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
 
-    Future.delayed(Duration(seconds: 2), () async{
+    Future.delayed(Duration(seconds: 3), () async{
       Future.microtask(() => 
         Provider.of<InvestasiProvider>(context, listen: false).getListInvestasi()
       );
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+      String id = await PreferenceHandler.getId();
+      if (id.isEmpty || id == "") {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => WelcomeScreen(),));
+      } else {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+      }
 
     },);
   }
@@ -31,32 +38,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorApp.abu,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Teks.biasa("Naikin level produktivitas lo!", fs: 15),
-            Teks.spesial("Bye-bye\nCatatan Kertas!", fs: 40),
-            Image.asset("assets/image/welcome.png"),
+            Image.asset("assets/image/chick1.png"),
+            Teks.spesial("Investasi Ala-ala", fs: 40),
             SizedBox(height: 60,),
             
-            SizedBox(
-              height: 50,
-              width: 239,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(98)
-                  ),
-                  foregroundColor: Colors.black,
-                  backgroundColor: ColorApp.kuning
-                ),
-                child: Teks.biasa("Mulai aja dulu!", fs: 16, fw: FontWeight.w500)
-              ),
-            ),
           ],
         ),
       ),

@@ -17,7 +17,6 @@ Widget tampilanDaftar(int jenis, InvestasiProvider prov, DbHelper db) {
   }
 
   if (list == [] || list.isEmpty) {
-    print(list);
     return Center(child: Teks.spesial("udah nda ada plus minus lagi duidnya",));
     
   } else {
