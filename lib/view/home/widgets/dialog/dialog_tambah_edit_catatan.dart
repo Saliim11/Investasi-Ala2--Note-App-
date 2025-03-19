@@ -5,6 +5,7 @@ import 'package:investasi_ala_ala/model/investasi.dart';
 import 'package:investasi_ala_ala/service/provider_handler.dart';
 import 'package:investasi_ala_ala/utils/constant/color.dart';
 import 'package:investasi_ala_ala/utils/widget_const/text.dart';
+import 'package:investasi_ala_ala/view/home/widgets/dialog/dialog_done.dart';
 
 String? selectedCatg;
 
@@ -150,6 +151,8 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, InvestasiProvider 
         
                                     resetCont();
                                     Navigator.pop(context);
+
+                                    showDoneDialog(context, "Udah kesimpen ya", imgUrl: "assets/image/chick2.png");
                                   }, 
                                   style: ElevatedButton.styleFrom(
                                     shape: BeveledRectangleBorder(),
