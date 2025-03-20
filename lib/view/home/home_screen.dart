@@ -28,10 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final prov = Provider.of<InvestasiProvider>(context);
-    
-
     DbHelper db = DbHelper();
-    Future<List<Investasi>> listInvestasiS = db.getInvestasi();
     listPrioritas = prov.listPrioritas;
 
     return Scaffold(

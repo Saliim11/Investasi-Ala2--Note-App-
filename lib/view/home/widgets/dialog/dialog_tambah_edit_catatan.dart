@@ -40,139 +40,144 @@ Future<dynamic> tambahEditCatatanDialog(BuildContext context, InvestasiProvider 
   }
   
   return showDialog(context: context, builder: (context) {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.width /2.5),
-        child: Dialog(
-          shape: RoundedRectangleBorder(),
-          surfaceTintColor: ColorApp.abu,
-          child: Container(
-            color: ColorApp.abu,
-            child: Stack(
-              children: [
-                Row(
+      return Dialog(
+        insetPadding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.width /2.5,
+          horizontal: 24
+        ),
+        shape: RoundedRectangleBorder(),
+        surfaceTintColor: ColorApp.abu,
+        child: Container(
+          color: ColorApp.abu,
+          child: Stack(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(left: 16),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: ColorApp.abu,
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0, 4),
+                            blurRadius: 4
+                          )
+                        ]
+                      ),
+                      child: isEdit ? Teks.biasa("Edit Data", fs: 20) : Teks.biasa("Tambah Data", fs: 20),
+                    ),
+                  )
+                ],
+              ),
+              
+              Padding(
+                padding: const EdgeInsets.only(top: 66.0, left: 16, right: 16,),
+                child: Container(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        textfieldTemp("A/N", "Masukkan nama", cont: cNama, isText: true),
+                        SizedBox(height: 10),
+                        isEdit ? dropDownTemp("Catatan untuk", "Pilih tujuan catatan", itemss, isEdit: isEdit, isInvest: isInvest) : dropDownTemp("Catatan untuk", "Pilih tujuan catatan", itemss),
+                        SizedBox(height: 10),
+                        textfieldTemp("Nominal", "Masukkan nominal", cont: cNominal, isText: false),
+                        SizedBox(height: 10),
+                        textfieldDatePick(context, "Tanggal Dimulai", "Masukkan tanggal", cont: cTglMulai),
+                        SizedBox(height: 10),
+                        textfieldDatePick(context, "Batas Waktu", "Masukkan deadline", cont: cDeadline),
+                        SizedBox(height: 10),
+                        textfieldTemp("Deskripsi", "Silahkan masukkan deskripsi\nsingkat data anda !", tinggi: 98, cont: cDeskripsi, isText: true),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+      
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Row(
                   children: [
                     Expanded(
                       child: Container(
-                        alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(left: 16),
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.only(right: 16),
                         height: 50,
                         decoration: BoxDecoration(
                           color: ColorApp.abu,
                           boxShadow: [
                             BoxShadow(
-                              offset: Offset(0, 4),
-                              blurRadius: 4
+                              offset: Offset(0, -2),
+                              blurRadius: 4,
                             )
                           ]
                         ),
-                        child: isEdit ? Teks.biasa("Edit Data", fs: 20) : Teks.biasa("Tambah Data", fs: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              height: 27,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  resetCont();
+                                  Navigator.pop(context);
+                                }, 
+                                style: ElevatedButton.styleFrom(
+                                  shape: BeveledRectangleBorder(),
+                                  backgroundColor: ColorApp.oren,
+                                  foregroundColor: Colors.black
+                                ),
+                                child: Teks.biasa("Batal")
+                              ),
+                            ),
+                            SizedBox(width: 30,),
+                            SizedBox(
+                              height: 27,
+                              child: ElevatedButton(
+                                onPressed: () async{
+                                  if (isEdit) {
+                                    bool isInvest = selectedCatg == itemss.first;
+                                    prov.editInvestasi(id!, cNama.text, double.parse(cNominal.text), isInvest, cTglMulai.text, cDeadline.text, cDeskripsi.text);
+      
+                                  } else {
+                                    if (selectedCatg == itemss.first) {
+                                      prov.addItemInvestasi(
+                                        Investasi(nama: cNama.text, nominal: double.parse(cNominal.text), deskripsi: cDeskripsi.text, tglMulai: cTglMulai.text, deadline: cDeadline.text, isPrio: false, isInvest: true)
+                                      );
+                                    } else {
+                                      prov.addItemInvestasi(
+                                        Investasi(nama: cNama.text, nominal: double.parse(cNominal.text), deskripsi: cDeskripsi.text, tglMulai: cTglMulai.text, deadline: cDeadline.text, isPrio: false, isInvest: false)
+                                      );
+                                    }
+                                  }
+                                  print("Mengirim data : $selectedCatg ${selectedCatg == itemss.first}");
+      
+                                  resetCont();
+                                  Navigator.pop(context);
+      
+                                  showDoneDialog(context, "Udah kesimpen ya", imgUrl: "assets/image/chick2.png");
+                                }, 
+                                style: ElevatedButton.styleFrom(
+                                  shape: BeveledRectangleBorder(),
+                                  backgroundColor: ColorApp.hijau,
+                                  foregroundColor: Colors.black
+                                ),
+                                child: Teks.biasa("Simpan")
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],
                 ),
-                
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      textfieldTemp("A/N", "Masukkan nama", cont: cNama, isText: true),
-                      SizedBox(height: 10),
-                      isEdit ? dropDownTemp("Catatan untuk", "Pilih tujuan catatan", itemss, isEdit: isEdit, isInvest: isInvest) : dropDownTemp("Catatan untuk", "Pilih tujuan catatan", itemss),
-                      SizedBox(height: 10),
-                      textfieldTemp("Nominal", "Masukkan nominal", cont: cNominal, isText: false),
-                      SizedBox(height: 10),
-                      textfieldDatePick(context, "Tanggal Dimulai", "Masukkan tanggal", cont: cTglMulai),
-                      SizedBox(height: 10),
-                      textfieldDatePick(context, "Batas Waktu", "Masukkan deadline", cont: cDeadline),
-                      SizedBox(height: 10),
-                      textfieldTemp("Deskripsi", "Silahkan masukkan deskripsi\nsingkat data anda !", tinggi: 98, cont: cDeskripsi, isText: true),
-                    ],
-                  ),
-                ),
-        
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.centerRight,
-                          padding: EdgeInsets.only(right: 16),
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: ColorApp.abu,
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(0, -2),
-                                blurRadius: 4,
-                              )
-                            ]
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SizedBox(
-                                height: 27,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    resetCont();
-                                    Navigator.pop(context);
-                                  }, 
-                                  style: ElevatedButton.styleFrom(
-                                    shape: BeveledRectangleBorder(),
-                                    backgroundColor: ColorApp.oren,
-                                    foregroundColor: Colors.black
-                                  ),
-                                  child: Teks.biasa("Batal")
-                                ),
-                              ),
-                              SizedBox(width: 30,),
-                              SizedBox(
-                                height: 27,
-                                child: ElevatedButton(
-                                  onPressed: () async{
-                                    if (isEdit) {
-                                      bool isInvest = selectedCatg == itemss.first;
-                                      prov.editInvestasi(id!, cNama.text, double.parse(cNominal.text), isInvest, cTglMulai.text, cDeadline.text, cDeskripsi.text);
-
-                                    } else {
-                                      if (selectedCatg == itemss.first) {
-                                        prov.addItemInvestasi(
-                                          Investasi(nama: cNama.text, nominal: double.parse(cNominal.text), deskripsi: cDeskripsi.text, tglMulai: cTglMulai.text, deadline: cDeadline.text, isPrio: false, isInvest: true)
-                                        );
-                                      } else {
-                                        prov.addItemInvestasi(
-                                          Investasi(nama: cNama.text, nominal: double.parse(cNominal.text), deskripsi: cDeskripsi.text, tglMulai: cTglMulai.text, deadline: cDeadline.text, isPrio: false, isInvest: false)
-                                        );
-                                      }
-                                    }
-                                    print("Mengirim data : $selectedCatg ${selectedCatg == itemss.first}");
-        
-                                    resetCont();
-                                    Navigator.pop(context);
-
-                                    showDoneDialog(context, "Udah kesimpen ya", imgUrl: "assets/image/chick2.png");
-                                  }, 
-                                  style: ElevatedButton.styleFrom(
-                                    shape: BeveledRectangleBorder(),
-                                    backgroundColor: ColorApp.hijau,
-                                    foregroundColor: Colors.black
-                                  ),
-                                  child: Teks.biasa("Simpan")
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ), 
+        ),
       );
     });
   }
