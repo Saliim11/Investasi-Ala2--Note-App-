@@ -1,16 +1,4 @@
 # investasi_ala_ala
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Sebuah Aplikasi catatan yang berguna untuk mencatat secara spesifik data pinjam uang / "hutang" dan data meminjamkan uang / "investasi".
+Project ini berfokus pada pembuatan aplikasi menggunakan *Sqflite* sebagai tempat penyimpanan datanya.
